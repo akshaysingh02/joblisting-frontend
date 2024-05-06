@@ -7,7 +7,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 export default function JobPost() {
     const {state} = useLocation()
     const [stateData] = useState(state?.jobDetails);
-    console.log(stateData)
+    const navigate = useNavigate()
     const [formData, setFormData] = useState({
         companyName: "" || stateData?.companyName,
         logoUrl: "" || stateData?.logoUrl,
@@ -52,7 +52,11 @@ export default function JobPost() {
             await updateJobPostById(stateData._id,formData)
             return;
         }
-        await createJobPost(formData)
+        const result = await createJobPost(formData)
+        if(result?.isTokenInValid){
+            localStorage.clear()
+            navigate("/login");
+        }
     }
 
     const addSkills = (event) =>{
@@ -153,7 +157,7 @@ export default function JobPost() {
                         value={formData.jobType}
                         onChange={handleChange}
                     >
-                        <option value="">Select job type</option>
+                        <option value="Default">Select job type</option>
                         <option value="Full-time">Full-time</option>
                         <option value="Part-time">Part-time</option>
                     </select>
@@ -246,7 +250,7 @@ export default function JobPost() {
                 </div>
                 <div className={styles.skills}>
                     {formData?.skills?.map((element) => (
-                        <div>
+                        <div key={element}>
                             {element}&nbsp;
                             <button onClick={() => removeSkill(element)}>
                                 X

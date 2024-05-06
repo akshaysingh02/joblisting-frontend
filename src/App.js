@@ -4,14 +4,16 @@ import LoginPage from "./pages/LoginPage/LoginPage";
 import JobPostPage from "./pages/JobPostPage/jobPostPage";
 import JobDescriptionPage from "./pages/JobDescriptionPage/JobDescriptionPage";
 import ProtectedRoute from "./components/ProtectedRoute";
+import HomePage from "./pages/Homepage/HomePage";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
-        <Route path="/job-post" element={< ProtectedRoute Component=<JobPostPage/> />}/>
+        <Route path="/job-post" element={< ProtectedRoute Component={JobPostPage} />}/>
         <Route path="/job-details/:id" element={<JobDescriptionPage />} />
       </Routes>
     </BrowserRouter>
